@@ -1,5 +1,6 @@
 package com.beratyesbek.youtubehibernate.entity;
 
+import com.beratyesbek.youtubehibernate.entity.interitance.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,19 +14,19 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Category extends BaseEntity {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-
 
     @Column(name = "code")
     private String code;
 
     @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.REMOVE)
     List<Product> products;
+
+    @Override
+    protected void prePersist() {
+        super.prePersist();
+    }
 }

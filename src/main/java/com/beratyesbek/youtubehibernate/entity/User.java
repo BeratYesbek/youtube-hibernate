@@ -4,19 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
-    @Id
-    @SequenceGenerator(name="pk_sequence",sequenceName="entity_id_seq", allocationSize=5, initialValue = 10)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pk_sequence")
-    @Column(name="id", unique=true, nullable=false)
-    private Integer id;
+    @EmbeddedId
+    private UserId id;
 
-    private String name;
+    @Embedded
+    private Address address;
 }

@@ -4,8 +4,10 @@ import com.beratyesbek.youtubehibernate.entity.Category;
 import com.beratyesbek.youtubehibernate.entity.Product;
 import com.beratyesbek.youtubehibernate.entity.ProductDetail;
 import com.beratyesbek.youtubehibernate.entity.Tag;
-import com.beratyesbek.youtubehibernate.repository.CategoryRepository;
-import com.beratyesbek.youtubehibernate.repository.ProductRepository;
+import com.beratyesbek.youtubehibernate.entity.interitance.discriminator.MachineAccessor;
+import com.beratyesbek.youtubehibernate.entity.interitance.single.Machine;
+import com.beratyesbek.youtubehibernate.entity.interitance.single.PrivateMachine;
+import com.beratyesbek.youtubehibernate.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,9 +26,13 @@ public class YoutubeHibernateApplication {
 
 
     @Bean
-    public CommandLineRunner run(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public CommandLineRunner run(ProductRepository productRepository, CategoryRepository categoryRepository,
+                                 MachineRepository machineRepository,
+                                 PrivateMachineRepository privateMachineRepository,
+                                 MachineAccessorRepository machineAccessorRepository
+                                 ) {
         return args -> {
-            Category category = categoryRepository.findById(1).orElseThrow(
+       /*     Category category = categoryRepository.findById(1).orElseThrow(
                     () -> new RuntimeException("Category has not been found")
             );
             ProductDetail productDetail = ProductDetail.builder()
@@ -49,7 +55,16 @@ public class YoutubeHibernateApplication {
 
            productRepository.save(product);
 
-            categoryRepository.deleteById(1);
+            categoryRepository.deleteById(1);*/
+          /*  PrivateMachine privateMachine =    new PrivateMachine();
+            privateMachine.setPrivateVpn("43254.54.54..54.5.4");
+            machineRepository.save(
+                privateMachine
+            );*/
+            List<Machine> machines = machineRepository.findAll();
+            PrivateMachine privateMachine = privateMachineRepository.findById(1).get();
+            List<MachineAccessor> machineAccessors = machineAccessorRepository.findAll();
+            System.out.println(privateMachine.getPrivateVpn());
         };
     }
 
