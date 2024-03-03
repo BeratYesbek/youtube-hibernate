@@ -4,6 +4,7 @@ import com.beratyesbek.youtubehibernate.entity.Category;
 import com.beratyesbek.youtubehibernate.entity.Product;
 import com.beratyesbek.youtubehibernate.entity.ProductDetail;
 import com.beratyesbek.youtubehibernate.entity.Tag;
+import com.beratyesbek.youtubehibernate.entity.index.Merchant;
 import com.beratyesbek.youtubehibernate.entity.interitance.discriminator.MachineAccessor;
 import com.beratyesbek.youtubehibernate.entity.interitance.single.Machine;
 import com.beratyesbek.youtubehibernate.entity.interitance.single.PrivateMachine;
@@ -29,8 +30,11 @@ public class YoutubeHibernateApplication {
     public CommandLineRunner run(ProductRepository productRepository, CategoryRepository categoryRepository,
                                  MachineRepository machineRepository,
                                  PrivateMachineRepository privateMachineRepository,
-                                 MachineAccessorRepository machineAccessorRepository
-                                 ) {
+                                 MachineAccessorRepository machineAccessorRepository,
+                                 MerchantRepository merchantRepository,
+                                 MerchantService merchantService
+
+    ) {
         return args -> {
        /*     Category category = categoryRepository.findById(1).orElseThrow(
                     () -> new RuntimeException("Category has not been found")
@@ -60,11 +64,49 @@ public class YoutubeHibernateApplication {
             privateMachine.setPrivateVpn("43254.54.54..54.5.4");
             machineRepository.save(
                 privateMachine
-            );*/
+            );
             List<Machine> machines = machineRepository.findAll();
             PrivateMachine privateMachine = privateMachineRepository.findById(1).get();
             List<MachineAccessor> machineAccessors = machineAccessorRepository.findAll();
-            System.out.println(privateMachine.getPrivateVpn());
+            System.out.println(privateMachine.getPrivateVpn());*/
+  /*          merchantRepository.save(
+                    Merchant.builder()
+                            .id(1)
+                            .name("Berat")
+                            .city("İstanbul")
+                            .address("Kadıköy")
+                            .phone("123456")
+                            .email("berat@yesbek.com").build()
+            )      ;
+
+            merchantRepository.save(
+                    Merchant.builder()
+                            .id(2)
+                            .name("Mehmet")
+                            .city("İstanbul")
+                            .address("Kadıköy")
+                            .phone("123456")
+                            .email("mehmet@yemeyk.com").build());*/
+            //merchantRepository.findAll();
+            //merchantRepository.findByName("Berat");
+
+            // merchantService.findByName("Berat");
+            // merchantService.findByName("Berat");
+
+            /* merchantService.save(Merchant.builder()
+                    .id(3)
+                    .name("Ahmet")
+                    .city("İstanbul")
+                    .address("Kadıköy")
+                    .phone("123456")
+                    .build());
+            merchantService.findByName("Berat");*/
+
+            List<Category> s = categoryRepository.findAllByCode("A");
+            List<Category> a1 = categoryRepository.findAllByCode("B");
+            List<Category> s2 = categoryRepository.findAllByCode("A");
+
+
         };
     }
 

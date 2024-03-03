@@ -1,6 +1,5 @@
 package com.beratyesbek.youtubehibernate.entity;
 
-import com.beratyesbek.youtubehibernate.entity.interitance.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +9,17 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
+@Access(AccessType.FIELD)
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends BaseEntity {
+@Cacheable
+public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
@@ -25,8 +30,4 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.REMOVE)
     List<Product> products;
 
-    @Override
-    protected void prePersist() {
-        super.prePersist();
-    }
 }

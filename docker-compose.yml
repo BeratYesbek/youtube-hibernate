@@ -20,5 +20,13 @@ services:
     volumes:
       - postgres-volume:/var/lib/postgresql/data
     command: -p 54322
+  redis-hibernate:
+      container_name: redis-hibernate
+      image: redis
+      ports:
+        - "6377:6379"
+      expose:
+        - "6377"
+      command: redis-server --port 6379
 volumes:
   postgres-volume:
