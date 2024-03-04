@@ -5,16 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.List;
 
 @Data
-@Access(AccessType.FIELD)
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "category")
 public class Category {
 
     @Id
@@ -27,7 +28,9 @@ public class Category {
     @Column(name = "code")
     private String code;
 
-    @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.REMOVE)
-    List<Product> products;
-
 }
+/*
+* Hibernate second level cache ne zaman kullanılır? (Avantaj, Dezavantaj)
+*
+*
+* */

@@ -1,0 +1,21 @@
+<config xmlns='http://www.ehcache.org/v3'>
+    <cache alias="default-query-results-region">
+        <expiry>
+            <ttl unit="minutes">30</ttl>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+
+    <cache alias="default-update-timestamps-region">
+        <expiry>
+            <none/>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+    <cache alias="com.beratyesbek.youtubehibernate.entity.Category">
+        <expiry>
+            <ttl unit="minutes">100</ttl>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+</config>

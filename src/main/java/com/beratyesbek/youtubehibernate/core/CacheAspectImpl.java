@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Aspect
 @Configuration
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class CacheAspectImpl {
 
     private final RedisCacheRepository redisCacheRepository;
+    private final Logger logger = Logger.getLogger(CacheAspectImpl.class.getName());
     @Around("@annotation(CacheAspect)")
     public Object before(ProceedingJoinPoint joinPoint) throws Throwable {
         // Get method signature using reflection
@@ -40,6 +42,7 @@ public class CacheAspectImpl {
 
         // If cache has the key, return the value from cache
         if (object.isPresent()) {
+            logger.info("Retrieved from the cache");
             return object.get();
         }
 

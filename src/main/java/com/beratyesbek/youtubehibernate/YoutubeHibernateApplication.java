@@ -1,25 +1,26 @@
 package com.beratyesbek.youtubehibernate;
 
 import com.beratyesbek.youtubehibernate.entity.Category;
-import com.beratyesbek.youtubehibernate.entity.Product;
-import com.beratyesbek.youtubehibernate.entity.ProductDetail;
-import com.beratyesbek.youtubehibernate.entity.Tag;
-import com.beratyesbek.youtubehibernate.entity.index.Merchant;
-import com.beratyesbek.youtubehibernate.entity.interitance.discriminator.MachineAccessor;
-import com.beratyesbek.youtubehibernate.entity.interitance.single.Machine;
-import com.beratyesbek.youtubehibernate.entity.interitance.single.PrivateMachine;
+import com.beratyesbek.youtubehibernate.entity.Merchant;
 import com.beratyesbek.youtubehibernate.repository.*;
+import com.beratyesbek.youtubehibernate.service.MerchantService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.logging.Logger;
 
+@EnableCaching
 @SpringBootApplication
 public class YoutubeHibernateApplication {
+
+    Logger logger = Logger.getLogger(YoutubeHibernateApplication.class.getName());
 
     public static void main(String[] args) {
         SpringApplication.run(YoutubeHibernateApplication.class, args);
@@ -27,86 +28,36 @@ public class YoutubeHibernateApplication {
 
 
     @Bean
-    public CommandLineRunner run(ProductRepository productRepository, CategoryRepository categoryRepository,
-                                 MachineRepository machineRepository,
-                                 PrivateMachineRepository privateMachineRepository,
-                                 MachineAccessorRepository machineAccessorRepository,
-                                 MerchantRepository merchantRepository,
-                                 MerchantService merchantService
-
-    ) {
+    public CommandLineRunner run(CategoryRepository categoryRepository) {
         return args -> {
-       /*     Category category = categoryRepository.findById(1).orElseThrow(
-                    () -> new RuntimeException("Category has not been found")
-            );
-            ProductDetail productDetail = ProductDetail.builder()
-                    .brand("Apple")
-                    .description("harika bir telefon")
-                    .warranty(true)
-                    .build();
-            Set<Tag> tags = new HashSet<>();
-            tags.add(Tag.builder().name("harika telefon").build());
-            tags.add(Tag.builder().name("çok iyi telefon").build());
-            tags.add(Tag.builder().name("müthiş telefon").build());
+            logger.info("A category is called");
+            List<Category> categoriesA = categoryRepository.findAllByCode("A");
+            logger.info("B category is called");
+            List<Category> categoriesB = categoryRepository.findAllByCode("B");
 
-           Product product = Product.builder()
-                    .name("Iphone 15")
-                    .quantity(13)
-                    .category(category)
-                    .productDetail(productDetail)
-                    .tags(tags)
-                    .build();
+            logger.info("A category is called second time");
+            List<Category> categoriesASecondTime = categoryRepository.findAllByCode("A");
 
-           productRepository.save(product);
-
-            categoryRepository.deleteById(1);*/
-          /*  PrivateMachine privateMachine =    new PrivateMachine();
-            privateMachine.setPrivateVpn("43254.54.54..54.5.4");
-            machineRepository.save(
-                privateMachine
-            );
-            List<Machine> machines = machineRepository.findAll();
-            PrivateMachine privateMachine = privateMachineRepository.findById(1).get();
-            List<MachineAccessor> machineAccessors = machineAccessorRepository.findAll();
-            System.out.println(privateMachine.getPrivateVpn());*/
-  /*          merchantRepository.save(
-                    Merchant.builder()
-                            .id(1)
-                            .name("Berat")
-                            .city("İstanbul")
-                            .address("Kadıköy")
-                            .phone("123456")
-                            .email("berat@yesbek.com").build()
-            )      ;
-
-            merchantRepository.save(
-                    Merchant.builder()
-                            .id(2)
-                            .name("Mehmet")
-                            .city("İstanbul")
-                            .address("Kadıköy")
-                            .phone("123456")
-                            .email("mehmet@yemeyk.com").build());*/
-            //merchantRepository.findAll();
-            //merchantRepository.findByName("Berat");
-
-            // merchantService.findByName("Berat");
-            // merchantService.findByName("Berat");
-
-            /* merchantService.save(Merchant.builder()
-                    .id(3)
-                    .name("Ahmet")
-                    .city("İstanbul")
-                    .address("Kadıköy")
-                    .phone("123456")
-                    .build());
-            merchantService.findByName("Berat");*/
-
-            List<Category> s = categoryRepository.findAllByCode("A");
-            List<Category> a1 = categoryRepository.findAllByCode("B");
-            List<Category> s2 = categoryRepository.findAllByCode("A");
+        };
+    }
 
 
+    @Bean
+    public CommandLineRunner runMerchant(MerchantService merchantService) {
+        return args -> {
+
+            logger.info("Merchant is called first time");
+            List<Merchant> merchants = merchantService.findAll();
+
+            logger.info("Merchant is called second time");
+            List<Merchant> merchantsSecondTime = merchantService.findAll();
+
+            logger.info("Merchant is saved");
+            Merchant merchant = Merchant.builder().name("Berat").email("berat@gmail.com").address("Istanbul").build();
+            merchantService.save(merchant);
+
+            logger.info("Merchant is called third time");
+            List<Merchant> merchantsThirdTime = merchantService.findAll();
         };
     }
 
