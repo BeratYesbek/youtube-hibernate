@@ -9,8 +9,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -30,14 +28,12 @@ public class CacheAspectImpl {
 
         // Get Key from annotation
         String key = cacheAspect.key();
-        // Get method arguments
-        List<Class<?>> args = Arrays.asList(method.getParameterTypes());
 
         // Get hash code of method arguments to use as hash key because each key should be unique.
         // If request comes with same arguments, it should return from cache.
-        String argsHashCode = getArgsHashCode(args);
+        String argsHashCode = getArgsHashCode(joinPoint.getArgs());
 
-        // Check if cache has the key
+        // Check if cache has the key , 64073954-, 2115594645-
         Optional<Object> object = redisCacheRepository.findByHashKey(key, argsHashCode);
 
         // If cache has the key, return the value from cache
@@ -52,12 +48,14 @@ public class CacheAspectImpl {
         return result;
     }
 
-    public String getArgsHashCode(List<Class<?>> args) {
+    private String getArgsHashCode(Object[] args) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Class<?> arg : args) {
-            stringBuilder.append(arg.hashCode());
+        for (Object arg : args) {
+            stringBuilder.append(arg != null ? arg.hashCode() : "null");
             stringBuilder.append("-");
         }
         return stringBuilder.toString();
     }
+
+
 }

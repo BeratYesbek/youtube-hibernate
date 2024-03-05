@@ -30,13 +30,13 @@ public class YoutubeHibernateApplication {
     @Bean
     public CommandLineRunner run(CategoryRepository categoryRepository) {
         return args -> {
-            logger.info("A category is called");
+           /* logger.info("A category is called");
             List<Category> categoriesA = categoryRepository.findAllByCode("A");
             logger.info("B category is called");
             List<Category> categoriesB = categoryRepository.findAllByCode("B");
 
             logger.info("A category is called second time");
-            List<Category> categoriesASecondTime = categoryRepository.findAllByCode("A");
+            List<Category> categoriesASecondTime = categoryRepository.findAllByCode("A"); */
 
         };
     }
@@ -46,18 +46,23 @@ public class YoutubeHibernateApplication {
     public CommandLineRunner runMerchant(MerchantService merchantService) {
         return args -> {
 
-            logger.info("Merchant is called first time");
-            List<Merchant> merchants = merchantService.findAll();
+           logger.info("Merchant is called first time");
+            List<Merchant> merchantsFirstTime = merchantService.findByName("Berat");
 
             logger.info("Merchant is called second time");
-            List<Merchant> merchantsSecondTime = merchantService.findAll();
+            List<Merchant> merchantsSecondTime = merchantService.findByName("Berat");
 
             logger.info("Merchant is saved");
             Merchant merchant = Merchant.builder().name("Berat").email("berat@gmail.com").address("Istanbul").build();
             merchantService.save(merchant);
 
             logger.info("Merchant is called third time");
-            List<Merchant> merchantsThirdTime = merchantService.findAll();
+            List<Merchant> merchantsThirdTime = merchantService.findByName("Berat");
+
+            logger.info("Merchant is called fourth time");
+            List<Merchant> merchantsFourthTime = merchantService.findByName("Furkan");
+
+
         };
     }
 

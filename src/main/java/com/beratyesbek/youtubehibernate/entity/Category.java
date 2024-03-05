@@ -29,8 +29,3 @@ public class Category {
     private String code;
 
 }
-/*
-* Hibernate second level cache ne zaman kullanılır? (Avantaj, Dezavantaj)
-*
-*
-* */

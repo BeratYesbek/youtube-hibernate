@@ -16,14 +16,17 @@ public class MerchantService {
 
     @CacheAspect(key = "MerchantService.findAll", duration = 100)
     public List<Merchant> findAll() {
-        // localhost vs http://127.0.0.1/
-        // my custom cache vs hibernate cache
         return merchantRepository.findAll();
     }
 
-    @CacheRemoveAspect(key = {"MerchantService.findAll"})
+    @CacheRemoveAspect(key = {"MerchantService.findAll", "MerchantService.findByName"})
     public Merchant save(Merchant merchant) {
         return merchantRepository.save(merchant);
+    }
+
+    @CacheAspect(key = "MerchantService.findByName", duration = 100)
+    public List<Merchant> findByName(String name) {
+        return merchantRepository.findByName(name);
     }
 
 
